@@ -1,6 +1,6 @@
 {
-  "name": "devoxx",
-  "version": "0.0.0",
+  "name": "devoxxstore",
+  "version": "0.0.1",
   "dependencies": {
     "sass-bootstrap": "~2.3.0",
     "requirejs": "~2.1.4",
