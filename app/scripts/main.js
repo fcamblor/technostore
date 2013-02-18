@@ -26,9 +26,10 @@ require.config({
 
 require(['hbs'], function () {
     'use strict';
-    require(['app', 'jquery', 'bootstrap'], function (app, $) {
+    require(['app', 'jquery', 'hbs!templates/hello/Hello', 'bootstrap'], function (app, $, helloTemplate) {
         // use app here
         console.log(app);
+        console.log(helloTemplate({who: "Bob sponge"}));
         console.log('Running jQuery %s', $().jquery);
     });
 });
