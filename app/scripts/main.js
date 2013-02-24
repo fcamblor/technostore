@@ -18,18 +18,17 @@ require.config({
             exports: '_'
         }
     },
+    deps: [ 'hbs' ],
     // hbs particular configuration properties
     hbs: {
         disableI18n: true // Support for i18n is useless for the moment...
     }
 });
 
-require(['hbs'], function () {
+require(['app', 'jquery', 'hbs!templates/hello/Hello', 'bootstrap'], function (app, $,  helloTemplate) {
     'use strict';
-    require(['app', 'jquery', 'hbs!templates/hello/Hello', 'bootstrap'], function (app, $, helloTemplate) {
         // use app here
-        console.log(app);
-        console.log(helloTemplate({who: "Bob sponge"}));
-        console.log('Running jQuery %s', $().jquery);
-    });
+    console.log(app);
+    console.log(helloTemplate({who: "Bob sponge"}));
+    console.log('Running jQuery %s', $().jquery);
 });
