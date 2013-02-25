@@ -31,4 +31,8 @@ require(['app', 'jquery', 'hbs!templates/hello/Hello', 'bootstrap'], function (a
     console.log(app);
     console.log(helloTemplate({who: "Bob sponge"}));
     console.log('Running jQuery %s', $().jquery);
+
+    require(['bar'], function (bar) {
+        console.log(helloTemplate({who: bar}));
+    });
 });
