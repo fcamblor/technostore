@@ -1,0 +1,60 @@
+
+$ambientColor : #dfdfdf;
+$heroUnitHeight: 80px;
+
+@mixin applyTheme($themeColor){
+  .title {
+      color: $themeColor;
+  }
+  .tab_left {
+      background-color: $themeColor;
+  }
+}
+
+.hero-unit {
+  li {
+    $heroUnitItemRadius: 10px;
+    $tabLeftWidth: $heroUnitItemRadius + 10px;
+    $textLeftPadding: $tabLeftWidth + 5px;
+    $titleSize: 1.5em;
+
+    background-color: $ambientColor;
+    list-style: none;
+    margin: $heroUnitItemRadius 0px $heroUnitItemRadius 0px;
+    display: block;
+    height: $heroUnitHeight;
+    border-radius: $heroUnitItemRadius;
+
+    .tab_left {
+        width: $tabLeftWidth;
+        height: $heroUnitHeight;
+        float: left;
+        border-top-left-radius: $heroUnitItemRadius;
+        border-bottom-left-radius: $heroUnitItemRadius;
+    }
+
+    .title {
+      font-size: $titleSize;
+      padding-left: $textLeftPadding;
+    }
+
+    .description {
+      font-size: $titleSize*4/5;
+      font-style: italic;
+      padding-left: $textLeftPadding;
+    }
+
+    &.tooling { @include applyTheme(#1099a3); }
+    &.jsfmk { @include applyTheme(#e16d17); }
+  }
+}
+
+/*
+$icons-sprite-dimensions: true;
+$icons-sprite-base-class: ".icons";
+.icons {
+  display: inline-block;
+}
+@import "icons/*.png";
+@include all-icons-sprites;
+*/
