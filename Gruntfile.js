@@ -236,7 +236,13 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,txt}',
-                        '.htaccess'
+                        '.htaccess',
+                        // Applied PR https://github.com/yeoman/generator-webapp/pull/23 to ensure
+                        // js script will be copied into dist/scripts/ directory to ensure "loaded on deman" script
+                        // will be available (these script won't be concatenated/minified into main.js file)
+                        'scripts/**/*.js',
+                        '!scripts/main.js',
+                        '!scripts/vendor/require.js'
                     ]
                 }]
             }
