@@ -1,6 +1,7 @@
 define(["backbone", "underscore", "models/Techno"], function(Backbone, _, modelType){
     var TechnosClass = Backbone.Collection.extend({
         model: modelType,
+        localStorage: new Backbone.LocalStorage("TechnosCollection"),
         defaults: {
         },
 
