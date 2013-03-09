@@ -35,10 +35,11 @@ require.config({
     }
 });
 
-require(['app', 'jquery', 'hbs!templates/hello/Hello', 'bootstrap'], function (app, $,  helloTemplate) {
+require(['app', 'jquery', 'hbs!templates/hello/Hello', 'routers/Router', 'bootstrap'], function (app, $,  helloTemplate, Router) {
     'use strict';
         // use app here
     console.log(app);
     console.log(helloTemplate({who: "Bob sponge"}));
     console.log('Running jQuery %s', $().jquery);
+    new Router();
 });
