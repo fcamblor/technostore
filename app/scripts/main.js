@@ -6,7 +6,9 @@ require.config({
         handlebars: '../components/require-handlebars-plugin/Handlebars',
         i18nprecompile: '../components/require-handlebars-plugin/hbs/i18nprecompile',
         hbs: '../components/require-handlebars-plugin/hbs',
-        bootstrap: 'vendor/bootstrap'
+        bootstrap: 'vendor/bootstrap',
+        rivets: '../components/rivets/lib/rivets',
+        backbone: '../components/backbone/backbone'
     },
     shim: {
         bootstrap: {
@@ -16,6 +18,14 @@ require.config({
         underscore: {
             deps: [],
             exports: '_'
+        },
+        backbone: {
+            deps: ['underscore'],
+            exports: 'Backbone'
+        },
+        rivets: {
+            deps: [],
+            exports: 'rivets'
         }
     },
     deps: [ 'hbs' ],
