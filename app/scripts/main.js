@@ -35,7 +35,7 @@ require.config({
     }
 });
 
-require(['app', 'jquery', 'hbs!templates/hello/Hello', 'routers/Router', 'bootstrap'], function (app, $,  helloTemplate, Router) {
+require(['app', 'jquery', 'hbs!templates/hello/Hello', 'routers/Router', 'bootstrap', 'vendor/rivets-backbone'], function (app, $,  helloTemplate, Router) {
     'use strict';
         // use app here
     console.log(app);
