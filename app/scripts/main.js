@@ -8,7 +8,8 @@ require.config({
         hbs: '../components/require-handlebars-plugin/hbs',
         bootstrap: 'vendor/bootstrap',
         rivets: '../components/rivets/lib/rivets',
-        backbone: '../components/backbone/backbone'
+        backbone: '../components/backbone/backbone',
+        'backbone.localStorage': '../components/backbone.localStorage/backbone.localStorage'
     },
     shim: {
         bootstrap: {
