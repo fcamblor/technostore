@@ -5,7 +5,8 @@ define([
     var HelloViewClass = Backbone.View.extend({
         events: {
             "click #addBtn": "addTechno",
-            "click #loadBtn": "loadTechnos"
+            "click #loadBtn": "loadTechnos",
+            "click #resetBtn": "resetTechnos"
         },
     
         initialize: function(){
@@ -28,10 +29,19 @@ define([
         },
 
         loadTechnos: function(){
-            var $self = this;
             $.when(this._technos.fetch()).then(function(models){
                 console.log("technos fetched : "+models);
             });
+        },
+
+        resetTechnos: function(){
+            var technos = this._technos.models;
+            // Should start from the end, otherwise it won't work...
+            for(var i=technos.length-1; i>=0; i--){
+                technos[i].destroy();
+            }
+            // Will be available in future version of backbone localstorage
+            // this._technos._clear();
         }
     });
     
