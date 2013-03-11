@@ -173,6 +173,14 @@ button {
                 </div>
                 <div class="slide">
                     <div class="col">
+                        <h1>Pause</h1>
+                    </div>
+                    <div class="col">
+                        <h1>Tricks</h1>
+                    </div>
+                </div>
+                <div class="slide">
+                    <div class="col">
                         <h1>Backbone router</h1>
                         <ul>
                             <li>One single page app</li>
@@ -257,18 +265,22 @@ button {
             <button style="margin: auto" class="pause">Resume</button>
         </div>
         <script type="text/javascript">
+            function durationOf(minutes, seconds){
+                return minutes * 60 + seconds;
+            }
             $(document).ready(function(){
                 SLIDE_TIMINGS = [
-                    { estimatedDuration: 210 }, // Presentation generale => 3m30
-                    { estimatedDuration: 510 }, // Yeoman => 8m30
-                    { estimatedDuration: 840 }, // Sass => 14m
-                    { estimatedDuration: 480 }, // Bower => 8m
-                    { estimatedDuration: 1200 }, // Requirejs => 20m
-                    { estimatedDuration: 600 }, // Backbone router => 10m
-                    { estimatedDuration: 600 }, // Premiere vue => 10m
-                    { estimatedDuration: 720 }, // Refacto router + listing technos => 12m
-                    { estimatedDuration: 300 }, // Models => 5m
-                    { estimatedDuration: 900 } // Mode edit avec binding => 15m
+                    { estimatedDuration: durationOf(5, 0) }, // Presentation generale
+                    { estimatedDuration: durationOf(9, 0) }, // Yeoman
+                    { estimatedDuration: durationOf(14, 0) }, // Sass
+                    { estimatedDuration: durationOf(8, 0) }, // Bower
+                    { estimatedDuration: durationOf(25, 0) }, // Requirejs & Handlebars
+                    { estimatedDuration: durationOf(10, 0) }, // Pause
+                    { estimatedDuration: durationOf(10, 0) }, // Backbone router
+                    { estimatedDuration: durationOf(10, 0) }, // Premiere vue
+                    { estimatedDuration: durationOf(15, 0) }, // Refacto router + listing technos
+                    { estimatedDuration: durationOf(5, 0) }, // Models
+                    { estimatedDuration: durationOf(15, 0) } // Mode edit avec binding
                 ];
                 currentSlide = 0;
                 globalTime = 0;
