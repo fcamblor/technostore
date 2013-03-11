@@ -68,18 +68,19 @@ button {
         <div class="container">
             <div id="stats">
                 <div class="statItem">
-                    <label for="totalDuration">Durée totale</label> : <span id="totalDuration"></span><br/>
-                    <label for="plannedDuration">Prévisionnelle</label> : <span id="plannedDuration"></span><br/>
+                    <label for="totalDuration">Durée totale</label> : <span data-text="timingModel.globalTime | toHHMMSS" id="totalDuration"></span><br/>
+                    <label for="plannedDuration">Prévisionnelle</label> : <span data-text="timingModel.plannedDuration | toHHMMSS" id="plannedDuration"></span><br/>
                 </div>
                 <div class="statItem">
-                    <label for="totalOverflow">Dépassement</label> : <span class="bad" id="totalOverflow"></span>
+                    <label for="totalOverflow">Dépassement</label> : <span data-class="timingModel:globalOverflowClass < .globalOverflow" data-text="timingModel.globalOverflow | toHHMMSS" class="bad" id="totalOverflow"></span>
                 </div>
                 <div class="statItem">
-                    <label for="slideCountdown">Timing slide</label> : <span id="slideCountdown"></span>
+                    <label for="slideCountdown">Timing slide</label> : <span data-class="timingModel:slideCountdownClass < .slideCountdown" data-text="timingModel.slideCountdown | toHHMMSS" id="slideCountdown"></span>
                 </div>
                 <button class="nextSlide">Next</button>
                 <hr style="clear: both"/>
-                <ol id="timings">
+                <ol data-each-timing="timings.models" id="timings">
+                    <li><span data-text="timing.duration | toHHMMSS"></span> (<span data-class="timing:deltaClass < .slideCountdown" data-text="timing.slideCountdown | toHHMMSS"></span>)</li>
                 </ol>
                 <hr style="clear: both"/>
             </div>
@@ -266,14 +267,114 @@ button {
             </div>
             <hr style="clear:both"/>
             <button style="margin: auto" class="nextSlide">Next</button>
-            <button style="margin: auto" class="pause">Resume</button>
+            <button style="margin: auto" data-text="timingModel:pauseResumeLabel < .resumeTS" class="pauseResume"></button>
         </div>
         <script type="text/javascript">
             function durationOf(minutes, seconds){
                 return minutes * 60 + seconds;
             }
+            TimingModel = Backbone.Model.extend({
+                defaults: {
+                    globalTime: 0,
+                    globalOverflow: 0,
+                    plannedDuration: 0,
+                    slideCountdown: 0,
+
+                    currentSlide: 0,
+
+                    resumeTS: null // == paused
+                },
+
+                reset: function(){
+                    this.set({ slideCountdown: this.currentSlideTiming().estimatedDuration*1000 });
+
+                    var plannedTotalDuration = 0;
+                    for(var i=0; i<this.get("slideTimings").length; i++){
+                        plannedTotalDuration += this.get("slideTimings")[i].estimatedDuration * 1000;
+                    }
+                    this.set({ plannedDuration: plannedTotalDuration });
+                },
+
+                resume: function(){
+                    this.set({ resumeTS: new Date() });
+                },
+
+                pause: function(){
+                    this.update();
+                    this.set({ resumeTS: null });
+                },
+
+                resumeOrPause: function(){
+                    if(!this.get("resumeTS")){ this.resume(); }
+                    else { this.pause(); }
+                },
+
+                pauseResumeLabel: function(){
+                    return this.get("resumeTS")?"Pause":"Resume";
+                },
+
+                globalOverflowClass: function(){
+                    return this.get("globalOverflow") < 0?"bad":"good";
+                },
+
+                slideCountdownClass: function(){
+                    return this.get("slideCountdown") < 0?"bad":"";
+                },
+
+                update: function(){
+                    if(!this.get("resumeTS")){
+                        return;
+                    }
+
+                    var newTS = new Date();
+                    var delta = newTS.getTime() - this.get("resumeTS").getTime();
+                    this.set({ resumeTS: newTS });
+
+                    this.set({
+                        globalTime: this.get("globalTime") + delta,
+                        slideCountdown: this.get("slideCountdown") - delta
+                    });
+                    if(this.get("slideCountdown") < 0){
+                        this.set({
+                            globalOverflow: this.get("globalOverflow") - delta
+                        });
+                    }
+                },
+
+                nextSlide: function(){
+                    this.currentSlideTiming().realDuration = this.currentSlideTiming().estimatedDuration * 1000 - this.get("slideCountdown");
+                    this.currentSlideTiming().delta = Math.round(this.get("slideCountdown") / 1000);
+
+                    window.timingsModel.add({
+                        duration: this.currentSlideTiming().realDuration,
+                        slideCountdown: this.get("slideCountdown")
+                    });
+
+                    this.set({
+                        globalOverflow: this.get("globalOverflow") + this.get("slideCountdown"),
+                        currentSlide: this.get("currentSlide")+1,
+                        plannedDuration: this.get("plannedDuration") - this.get("slideCountdown")
+                    });
+                    this.set({
+                        slideCountdown: this.currentSlideTiming().estimatedDuration * 1000
+                    })
+                },
+
+                currentSlideTiming: function(){ return this.get("slideTimings")[this.get("currentSlide")]; }
+            });
+
+            TimingsCollection = Backbone.Collection.extend({
+                model: Backbone.Model.extend({
+                    deltaClass: function(){
+                        return this.get("slideCountdown")>0?"good":"bad";
+                    }
+                })
+            });
+
             $(document).ready(function(){
                 SLIDE_TIMINGS = [
+                        // + Promises + Chrome ???
+                    { estimatedDuration: durationOf(0, 10) }, // Presentation generale
                     { estimatedDuration: durationOf(5, 0) }, // Presentation generale
                     { estimatedDuration: durationOf(9, 0) }, // Yeoman
                     { estimatedDuration: durationOf(14, 0) }, // Sass
@@ -286,13 +387,9 @@ button {
                     { estimatedDuration: durationOf(5, 0) }, // Models
                     { estimatedDuration: durationOf(15, 0) } // Mode edit avec binding
                 ];
-                currentSlide = 0;
-                globalTime = 0;
-                globalOverflow = 0;
-                slideCountdown = SLIDE_TIMINGS[currentSlide].estimatedDuration;
-                paused = true;
 
-                function toHHMMSS(sec_numb){
+                function toHHMMSS(timestamp){
+                    var sec_numb = Math.round(timestamp/1000);
                     var sign="";
                     if(sec_numb < 0){
                         sign="-";
@@ -309,63 +406,27 @@ button {
                     return time;
                 }
 
-                plannedTotalDuration = 0;
-                for(var i=0; i<SLIDE_TIMINGS.length; i++){
-                    plannedTotalDuration += SLIDE_TIMINGS[i].estimatedDuration;
-                }
-                totalDurationEl = $("#totalDuration");
-                totalOverflowEl = $("#totalOverflow");
-                slideCountdownEl = $("#slideCountdown");
-                plannedDurationEl = $("#plannedDuration");
-                function tick(){
-                    if(window.paused){ return; }
-                    globalTime++;
-                    slideCountdown--;
-                    if(globalOverflow == -1){
-                        totalOverflowEl.removeClass("good").addClass("bad");
-                    }
-                    if(slideCountdown==-1){
-                        slideCountdownEl.addClass("bad");
-                    }
-                    globalOverflow -= slideCountdown<0?1:0;
-                }
+                window.timingModel = new TimingModel({ slideTimings: SLIDE_TIMINGS });
+                window.timingsModel = new TimingsCollection();
 
-                function display(){
-                    totalDurationEl.html(toHHMMSS(globalTime));
-                    totalOverflowEl.html(toHHMMSS(globalOverflow));
-                    slideCountdownEl.html(toHHMMSS(slideCountdown));
-                    plannedDurationEl.html(toHHMMSS(plannedTotalDuration - globalOverflow));
-                }
+                rivets.formatters.toHHMMSS = toHHMMSS;
+                rivets.bind($(".container"), { timingModel: window.timingModel, timings: timingsModel });
+                window.timingModel.reset();
 
-                setInterval(tick, 1000);
-                setInterval(display, 1000);
+                // Here, you can specify refresh rate...
+                setInterval(_.bind(timingModel.update, timingModel), 2000);
 
-                $(".pause").click(function(){
-                    window.paused = !window.paused;
-                    $(".pause").html(window.paused?"Resume":"Pause");
+                $(".pauseResume").click(function(){
+                    timingModel.resumeOrPause();
                 });
 
                 $(".nextSlide").click(function(){
                     var visibleSlide = $(".slide.visible");
                     visibleSlide.removeClass("visible");
 
-                    SLIDE_TIMINGS[currentSlide].realDuration = SLIDE_TIMINGS[currentSlide].estimatedDuration - slideCountdown;
-                    SLIDE_TIMINGS[currentSlide].delta = slideCountdown;
-                    var displayedDelta = " <span class=\""+(slideCountdown>0?"good":"bad")+"\">("+toHHMMSS(slideCountdown)+")</span>";
-                    $("<li></li>").html(toHHMMSS(SLIDE_TIMINGS[currentSlide].realDuration)+displayedDelta).appendTo($("#timings"));
-
-        		    if(slideCountdown > 0){
-                        globalOverflow += slideCountdown;
-		            	if(globalOverflow > 0){
-                            totalOverflowEl.removeClass("bad").addClass("good");
-                        }
-		            }
-                    slideCountdownEl.removeClass("bad");
-
-                    currentSlide++;
+                    window.timingModel.nextSlide();
 
                     visibleSlide.next().addClass("visible");
-                    slideCountdown = SLIDE_TIMINGS[currentSlide].estimatedDuration;
                 });
             });
         </script>
