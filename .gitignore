@@ -1,0 +1,12 @@
+node_modules
+temp
+dist
+.sass-cache
+app/components
+.tmp
+
+# IDE-specific config files
+.idea
+*.iml
+atlassian-ide-plugin.xml
+
