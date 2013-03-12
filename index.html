@@ -382,9 +382,6 @@ button {
             $(document).ready(function(){
                 SLIDE_TIMINGS = [
                         // + Promises + Chrome ???
-                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
-                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
-                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
                     { estimatedDuration: durationOf(5, 0) }, // Presentation generale
                     { estimatedDuration: durationOf(9, 0) }, // Yeoman
                     { estimatedDuration: durationOf(14, 0) }, // Sass
@@ -424,7 +421,7 @@ button {
                 window.timingModel.reset();
 
                 // Here, you can specify refresh rate...
-                setInterval(_.bind(timingModel.update, timingModel), 2000);
+                setInterval(_.bind(timingModel.update, timingModel), 1000);
 
                 $(".pauseResume").click(function(){
                     timingModel.resumeOrPause();
