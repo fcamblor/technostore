@@ -69,10 +69,10 @@ button {
             <div id="stats">
                 <div class="statItem">
                     <label for="totalDuration">Durée totale</label> : <span data-text="timingModel.globalTime | toHHMMSS" id="totalDuration"></span><br/>
-                    <label for="plannedDuration">Prévisionnelle</label> : <span data-text="timingModel.plannedDuration | toHHMMSS" id="plannedDuration"></span><br/>
+                    <label for="plannedDuration">Prévisionnelle</label> : <span data-text="timingModel:plannedSummedDuration < .plannedDuration .slideCountdown | toHHMMSS" id="plannedDuration"></span><br/>
                 </div>
                 <div class="statItem">
-                    <label for="totalOverflow">Dépassement</label> : <span data-class="timingModel:globalOverflowClass < .globalOverflow" data-text="timingModel.globalOverflow | toHHMMSS" class="bad" id="totalOverflow"></span>
+                    <label for="totalOverflow">Dépassement</label> : </span> <span data-class="timingModel:globalOverflowClass < .globalOverflow .slideCountdown" data-text="timingModel:globalSummedOverflow < .globalOverflow .slideCountdown | toHHMMSS" class="bad" id="totalOverflow"></span>
                 </div>
                 <div class="statItem">
                     <label for="slideCountdown">Timing slide</label> : <span data-class="timingModel:slideCountdownClass < .slideCountdown" data-text="timingModel.slideCountdown | toHHMMSS" id="slideCountdown"></span>
@@ -319,7 +319,15 @@ button {
                 },
 
                 globalOverflowClass: function(){
-                    return this.get("globalOverflow") < 0?"bad":"good";
+                    return this.globalSummedOverflow() < 0?"bad":"good";
+                },
+
+                globalSummedOverflow: function(){
+                    return this.get("globalOverflow") + (this.get("slideCountdown")<0?this.get("slideCountdown"):0);
+                },
+
+                plannedSummedDuration: function(){
+                    return this.get("plannedDuration") - (this.get("slideCountdown")<0?this.get("slideCountdown"):0);
                 },
 
                 slideCountdownClass: function(){
@@ -339,11 +347,6 @@ button {
                         globalTime: this.get("globalTime") + delta,
                         slideCountdown: this.get("slideCountdown") - delta
                     });
-                    if(this.get("slideCountdown") < 0){
-                        this.set({
-                            globalOverflow: this.get("globalOverflow") - delta
-                        });
-                    }
                 },
 
                 nextSlide: function(){
@@ -379,6 +382,9 @@ button {
             $(document).ready(function(){
                 SLIDE_TIMINGS = [
                         // + Promises + Chrome ???
+                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
+                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
+                    { estimatedDuration: durationOf(0, 5) }, // Presentation generale
                     { estimatedDuration: durationOf(5, 0) }, // Presentation generale
                     { estimatedDuration: durationOf(9, 0) }, // Yeoman
                     { estimatedDuration: durationOf(14, 0) }, // Sass
