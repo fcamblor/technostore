@@ -69,13 +69,15 @@ button {
             <div id="stats">
                 <div class="statItem">
                     <label for="totalDuration">Durée totale</label> : <span data-text="timingModel.globalTime | toHHMMSS" id="totalDuration"></span><br/>
-                    <label for="plannedDuration">Prévisionnelle</label> : <span data-text="timingModel:plannedSummedDuration < .plannedDuration .slideCountdown | toHHMMSS" id="plannedDuration"></span><br/>
+                    <label for="plannedDuration">Durée prévisionnelle</label> : <span data-text="timingModel:plannedSummedDuration < .plannedDuration .slideCountdown | toHHMMSS" id="plannedDuration"></span><br/>
                 </div>
                 <div class="statItem">
-                    <label for="totalOverflow">Dépassement</label> : </span> <span data-class="timingModel:globalOverflowClass < .globalOverflow .slideCountdown" data-text="timingModel:globalSummedOverflow < .globalOverflow .slideCountdown | toHHMMSS" class="bad" id="totalOverflow"></span>
+                    <label for="totalOverflow">Dépassement</label> : <span data-class="timingModel:globalOverflowClass < .globalOverflow .slideCountdown" data-text="timingModel:globalSummedOverflow < .globalOverflow .slideCountdown | toHHMMSS" class="bad" id="totalOverflow"></span><br/>
+                    <label for="remainingTime">RAF</label> : <span data-text="timingModel:remainingTime < .slidesRemainingBaseTime .slideCountdown | toHHMMSS" id="remainingTime"></span>
                 </div>
                 <div class="statItem">
-                    <label for="slideCountdown">Timing slide</label> : <span data-class="timingModel:slideCountdownClass < .slideCountdown" data-text="timingModel.slideCountdown | toHHMMSS" id="slideCountdown"></span>
+                    <label for="slideCountdown">Timing slide</label> : <span data-class="timingModel:slideCountdownClass < .slideCountdown" data-text="timingModel.slideCountdown | toHHMMSS" id="slideCountdown"></span><br/>
+                    <label for="plannedEndTime">Fin prévisionnelle</label> : <span data-text="timingModel:plannedEndTime < .slidesRemainingBaseTime .slideCountdown .latestTick | dateToHHMMSS" id="plannedEndTime"></span>
                 </div>
                 <button class="nextSlide">Next</button>
                 <hr style="clear: both"/>
@@ -213,6 +215,7 @@ button {
                             <li>Rôle du champ $el</li>
                             <li>Appel dans le routeur</li>
                             <li>Rajout bouton => events</li>
+                            <li>Utilisation d'un require pour charger tardivement la vue (à la demande)</li>
                         </ul>
                     </div>
                     <div class="col">
@@ -293,7 +296,8 @@ button {
 
                     currentSlide: 0,
 
-                    resumeTS: null // == paused
+                    resumeTS: null, // == paused
+                    slidesRemainingBaseTime: 0
                 },
 
                 reset: function(){
@@ -303,7 +307,10 @@ button {
                     for(var i=0; i<this.get("slideTimings").length; i++){
                         plannedTotalDuration += this.get("slideTimings")[i].estimatedDuration * 1000;
                     }
-                    this.set({ plannedDuration: plannedTotalDuration });
+                    this.set({
+                        plannedDuration: plannedTotalDuration,
+                        slidesRemainingBaseTime: plannedTotalDuration
+                    });
                 },
 
                 resume: function(){
@@ -318,6 +325,15 @@ button {
                 resumeOrPause: function(){
                     if(!this.get("resumeTS")){ this.resume(); }
                     else { this.pause(); }
+                },
+
+                remainingTime: function(){
+                    return this.get("slidesRemainingBaseTime")
+                            - ((this.currentSlideTiming().estimatedDuration*1000) - (this.get("slideCountdown")>0?this.get("slideCountdown"):0));
+                },
+
+                plannedEndTime: function(){
+                    return this.get("latestTick") + this.remainingTime();
                 },
 
                 pauseResumeLabel: function(){
@@ -341,6 +357,7 @@ button {
                 },
 
                 update: function(){
+                    this.set({ latestTick: new Date().getTime() });
                     if(!this.get("resumeTS")){
                         return;
                     }
@@ -367,7 +384,8 @@ button {
                     this.set({
                         globalOverflow: this.get("globalOverflow") + this.get("slideCountdown"),
                         currentSlide: this.get("currentSlide")+1,
-                        plannedDuration: this.get("plannedDuration") - this.get("slideCountdown")
+                        plannedDuration: this.get("plannedDuration") - this.get("slideCountdown"),
+                        slidesRemainingBaseTime: this.get("slidesRemainingBaseTime") - (this.currentSlideTiming().estimatedDuration * 1000)
                     });
                     this.set({
                         slideCountdown: this.currentSlideTiming().estimatedDuration * 1000
@@ -401,6 +419,12 @@ button {
                     { estimatedDuration: durationOf(15, 0) } // Mode edit avec binding
                 ];
 
+                function dateToHHMMSS(timestamp){
+                    // Having to pass through a date object to convert to non utc time
+                    var time = new Date(timestamp);
+                    return toHHMMSS((time.getSeconds() + (time.getMinutes() * 60) + (time.getHours() * 60 * 60))*1000);
+                }
+
                 function toHHMMSS(timestamp){
                     var sec_numb = Math.round(timestamp/1000);
                     var sign="";
@@ -423,6 +447,7 @@ button {
                 window.timingsModel = new TimingsCollection();
 
                 rivets.formatters.toHHMMSS = toHHMMSS;
+                rivets.formatters.dateToHHMMSS = dateToHHMMSS;
                 rivets.bind($(".container"), { timingModel: window.timingModel, timings: timingsModel });
                 window.timingModel.reset();
 
