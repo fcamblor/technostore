@@ -1,0 +1,12 @@
+- Présentation :            4m/ 5m (-9s)  |  5m/ 5m (+6s)  => 4m
+- Yeoman :                 25m/20m (-5m)  | 30m/ 8m (-22m) => 18m
+- Sass :                   21m/20m (-1m)  | 32m/14m (-18m) => 20m
+- Bower :                   7m/14m (+7m)  | 27m/25m (-2m)  => 7m
+- RequireJS :              29m/25m (-4m)  | 25m/ 8m (+17m) => 23m
+- Pause :                  14m/10m (-4m)  | ????           => 12m
+- Backbone router :        13m/12m (-1m)  | 12m/10m (-2m)  => 10m
+- Backbone view :          14m/13m (+1m)  | 25m/25m (-15s) => 14m
+- Vue listing & promises : 30m/21m (-9m)  | 21m/15m (-6m)  => 25m
+- Backbone Models :         9m/ 5m (-4m)  | 10m/ 5m (-5m)  => 7m
+- Rivets :                 25m/20m (-5m)  | 21m/15m (-6m)  => 25m
+
