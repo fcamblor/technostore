@@ -52,7 +52,7 @@ body {
 .statItem {
     display: block;
     float: left;
-    width: 30%;
+    width: 45%;
 }
 button {
     float: right;
@@ -70,14 +70,12 @@ button {
                 <div class="statItem">
                     <label for="totalDuration">Durée totale</label> : <span data-text="timingModel.globalTime | toHHMMSS" id="totalDuration"></span><br/>
                     <label for="plannedDuration">Durée prév</label> : <span data-text="timingModel:plannedSummedDuration < .plannedDuration .slideCountdown | toHHMMSS" id="plannedDuration"></span><br/>
-                </div>
-                <div class="statItem">
-                    <label for="totalOverflow">Dépassement</label> : <span data-class="timingModel:globalOverflowClass < .globalOverflow .slideCountdown" data-text="timingModel:globalSummedOverflow < .globalOverflow .slideCountdown | toHHMMSS" class="bad" id="totalOverflow"></span><br/>
-                    <label for="remainingTime">RAF</label> : <span data-text="timingModel:remainingTime < .slidesRemainingBaseTime .slideCountdown | toHHMMSS" id="remainingTime"></span>
+                    <label for="plannedEndTime">Fin prévisionnelle</label> : <span data-text="timingModel:plannedEndTime < .slidesRemainingBaseTime .slideCountdown .latestTick | dateToHHMMSS" id="plannedEndTime"></span>
                 </div>
                 <div class="statItem">
                     <label for="slideCountdown">Timing slide</label> : <span data-class="timingModel:slideCountdownClass < .slideCountdown" data-text="timingModel.slideCountdown | toHHMMSS" id="slideCountdown"></span><br/>
-                    <label for="plannedEndTime">Fin prévisionnelle</label> : <span data-text="timingModel:plannedEndTime < .slidesRemainingBaseTime .slideCountdown .latestTick | dateToHHMMSS" id="plannedEndTime"></span>
+                    <label for="totalOverflow">Dépassement</label> : <span data-class="timingModel:globalOverflowClass < .globalOverflow .slideCountdown" data-text="timingModel:globalSummedOverflow < .globalOverflow .slideCountdown | toHHMMSS" class="bad" id="totalOverflow"></span><br/>
+		    <label for="remainingTime">RAF</label> : <span data-text="timingModel:remainingTime < .slidesRemainingBaseTime .slideCountdown | toHHMMSS" id="remainingTime"></span>
                 </div>
                 <button class="nextSlide">Next</button>
                 <hr style="clear: both"/>
@@ -91,14 +89,10 @@ button {
                     <div class="col">
                         <h1>Présentation</h1>
                         <ul>
-                            <li>Qui je suis</li>
+                            <li>Qui je suis : 4SH, BordeauxJUG, Jenkins</li>
                             <li>Timing serré</li>
-                            <li>Yeoman</li>
-                            <li>Sass</li>
-                            <li>Bower</li>
-                            <li>RequireJS</li>
-                            <li>Handlebars</li>
-                            <li>BackbonejS</li>
+                            <li>Tooling : Yeoman, Grunt, Sass, Bower, Chrome</li>
+                            <li>Librairies : RequireJS, Handlebars, Backbone, Rivets</li>
                         </ul>
                     </div>
                     <div class="col">
@@ -110,7 +104,7 @@ button {
                 </div>
                 <div class="slide">
                     <div class="col">
-                        <h1>Yeoman</h1>
+                        <h1>Yeoman/Grunt</h1>
                         <ul>
                             <li>Présentation générale : Générateur de projet</li>
 			    <li>Scaffolding puis rapidement npm install && bower install</li>
@@ -122,7 +116,6 @@ button {
                     <div class="col">
                         <h1>Tricks</h1>
                         <ul>
-                            <li>Déminification des js</li>
                             <li>Fonctionnement des Workspaces</li>
 			    <li>Local modifications</li>
                         </ul>
@@ -180,8 +173,8 @@ button {
                             <li>Vue network pour voir l'enchaînement du chargement des scripts</li>
                             <li>Comparaison sans/avec requirejs sur le chargement (lazy loading)</li>
                             <li>grunt dist pour minification des scripts</li>
-                            <li>Points d'arrêt sur exceptions dans erreurs de template</li>
-                            <li>Démonstration de l'utilisation des partials handlebars (/!\ _ au lieu de / ds les paths)</li>
+			    <li>Déminification des script avec Chrome</li>
+                            <li>Partials handlebars (/!\ _ au lieu de / ds les paths)</li>
                         </ul>
                     </div>
                 </div>
@@ -236,6 +229,7 @@ button {
                             <li>Nouvelle vue</li>
                             <li>Simplification routeur</li>
                             <li>Appel Ajax pour technos</li>
+			    <li>Point d'arrêt sur exception (this => self)</li>
                             <li>Promises & combinaison de promises</li>
                             <li>Limite : re-rendering si maj des models</li>
                         </ul>
