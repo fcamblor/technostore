@@ -4,6 +4,7 @@ dist
 .sass-cache
 app/components
 .tmp
+.allow-devtools-edit
 
 # IDE-specific config files
 .idea
