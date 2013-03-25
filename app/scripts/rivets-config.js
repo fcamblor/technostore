@@ -5,6 +5,7 @@ define(['rivets', 'backbone'], function(rivets, Backbone){
     'use strict';
 
     rivets.formatters.typeToClass = function(value){ return value===1?"tooling":"jsfmk"; };
+    rivets.binders["to-jq-data"] = function(el, value){ $(el).data("rivetsContext", value); };
 
     rivets.configure({
       adapter: {

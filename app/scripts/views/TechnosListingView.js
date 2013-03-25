@@ -34,8 +34,11 @@ define([
             return this;
         },
 
-        editTechno: function(){
+        editTechno: function(event){
             this.editedTechno.set({ show: true });
+
+            var targetTechno = $(event.currentTarget).data("rivetsContext");
+            this.editedTechno.set(targetTechno.toJSON());
         }
     
     });
