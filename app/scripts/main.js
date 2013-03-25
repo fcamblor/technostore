@@ -8,9 +8,8 @@ require.config({
         handlebars: '../components/require-handlebars-plugin/Handlebars',
         i18nprecompile: '../components/require-handlebars-plugin/hbs/i18nprecompile',
         hbs: '../components/require-handlebars-plugin/hbs',
-        bootstrap: 'vendor/bootstrap' /*,
+        bootstrap: 'vendor/bootstrap',
         rivets: '../components/rivets/lib/rivets'
-        */
     },
     shim: {
         bootstrap: {
@@ -30,11 +29,10 @@ require.config({
             // for strange reasons, we have to confirm it with init function
             // because otherwise, window.Backbone won't be provided as module dependency
             exports: "Backbone"
-        /* },
+        },
         rivets: {
             deps: [],
             exports: 'rivets'
-            */
         }
     },
     deps: [ 'hbs' ],

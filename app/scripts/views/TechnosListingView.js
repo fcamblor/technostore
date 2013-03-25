@@ -1,7 +1,7 @@
 /*global define */
 define([
-    "backbone", "underscore", "hbs!templates/technoListing", "models/Technos"
-], function(Backbone, _, viewTemplate, Technos){
+    "backbone", "underscore", "hbs!templates/technoListing", "models/Technos", 'rivets'
+], function(Backbone, _, viewTemplate, Technos, rivets){
     'use strict';    
 
     var TechnosListingViewClass = Backbone.View.extend({
@@ -17,13 +17,14 @@ define([
         render: function(){
             var self = this;
 
+            debugger;
+            self.$el.html(viewTemplate({}));
+            rivets.bind(this.$el, { technos: this.technos });
+
             $.when(
                 self.technos.fetch()
             ).then(function(){
-                self.$el.html(viewTemplate({
-                    technos: self.technos.toJSON(),
-                    toolingCount: self.technos.countToolings()
-                }));
+                console.log("technos fetched !");
             });
 
             return this;

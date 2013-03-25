@@ -1,13 +1,11 @@
 Bienvenue DevoxxFR sur la liste des technos que je vais vous présenter !...
 
 <ul>
-    {{#each technos}}
-    <li class="{{typeToClass}}">
+    <li data-each-techno="technos.models" data-class="techno.type">
         <div class="tab_left"></div>
-        <div class="title">{{title}}</div>
-        <div class="description">{{description}}</div>
+        <div data-text="techno.title" class="title"></div>
+        <div data-text="techno.description" class="description"></div>
     </li>
-    {{/each}}
 </ul>
 
-... Soit {{toolingCount}} technos de type tooling !
+... Soit <span>TBD</span> technos de type tooling !
