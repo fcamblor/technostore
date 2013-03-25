@@ -1,24 +1,29 @@
 /*global define */
 define([
-    "backbone", "underscore", "hbs!templates/technoListing", "models/Technos", 'rivets'
-], function(Backbone, _, viewTemplate, Technos, rivets){
+    "backbone", "underscore", "hbs!templates/technoListing", "models/Technos", "models/Techno", 'rivets'
+], function(Backbone, _, viewTemplate, Technos, Techno, rivets){
     'use strict';    
 
     var TechnosListingViewClass = Backbone.View.extend({
         events: {
+            "click .edit":"editTechno"
         },
     
         initialize: function(){
             TechnosListingViewClass.__super__.initialize.apply(this, arguments);
 
             this.technos = new Technos();
+            this.editedTechno = new Techno();
         },
     
         render: function(){
             var self = this;
 
             self.$el.html(viewTemplate({}));
-            rivets.bind(this.$el, { technos: this.technos });
+            rivets.bind(this.$el, {
+                technos: this.technos,
+                editedEntry: this.editedTechno
+            });
 
             $.when(
                 self.technos.fetch()
@@ -27,6 +32,10 @@ define([
             });
 
             return this;
+        },
+
+        editTechno: function(){
+            this.editedTechno.set({ show: true });
         }
     
     });

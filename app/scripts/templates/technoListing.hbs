@@ -5,7 +5,16 @@ Bienvenue DevoxxFR sur la liste des technos que je vais vous présenter !...
         <div class="tab_left"></div>
         <div data-text="techno.title" class="title"></div>
         <div data-text="techno.description" class="description"></div>
+        <button class="edit btn">Edit</button>
     </li>
 </ul>
 
 ... Soit <span data-text="technos:countToolings < technos.models"></span> technos de type tooling !
+
+<div data-show="editedEntry.show">
+  Edited techno :
+  <form> 
+    <input type="text" data-value="editedEntry.title"/><br/>
+    <textarea cols="30" rows="10" data-value="editedEntry.description"></textarea>
+  </form>
+</div>
