@@ -45,10 +45,9 @@ require.config({
 });
 
 
-require(['app', 'hbs!templates/hello'], function (app, helloTemplate) {
+require(['app'], function (app) {
     'use strict';
 
     // use app here
     console.log(app);
-    console.log(helloTemplate({ who: "devoxx" }));
 });
