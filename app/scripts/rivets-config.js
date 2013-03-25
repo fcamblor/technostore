@@ -4,6 +4,8 @@
 define(['rivets', 'backbone'], function(rivets, Backbone){
     'use strict';
 
+    rivets.formatters.typeToClass = function(value){ return value===1?"tooling":"jsfmk"; };
+
     rivets.configure({
       adapter: {
         subscribe: function(obj, keypath, callback) {

@@ -1,11 +1,11 @@
 Bienvenue DevoxxFR sur la liste des technos que je vais vous présenter !...
 
 <ul>
-    <li data-each-techno="technos.models" data-class="techno.type">
+    <li data-each-techno="technos.models" data-class="techno.type | typeToClass">
         <div class="tab_left"></div>
         <div data-text="techno.title" class="title"></div>
         <div data-text="techno.description" class="description"></div>
     </li>
 </ul>
 
-... Soit <span>TBD</span> technos de type tooling !
+... Soit <span data-text="technos:countToolings < technos.models"></span> technos de type tooling !

@@ -17,7 +17,6 @@ define([
         render: function(){
             var self = this;
 
-            debugger;
             self.$el.html(viewTemplate({}));
             rivets.bind(this.$el, { technos: this.technos });
 
