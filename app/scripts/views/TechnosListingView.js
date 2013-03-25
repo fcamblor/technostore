@@ -15,16 +15,16 @@ define([
         render: function(){
             var self = this;
 
-            $.ajax("/data/toolings.json", {
-                success: function(toolingTechnos){
-                    $.ajax("/data/jsfmks.json", {
-                       success: function(jsFmkTechnos){
-                           self.$el.html(viewTemplate({
-                               technos: _.union(toolingTechnos, jsFmkTechnos)
-                           }));
-                       }
-                    });
-                }
+            var toolingsPromise = $.ajax("/data/toolings.json");
+            var jsFmksPromise = $.ajax("/data/jsfmks.json");
+
+            $.when(
+                toolingsPromise,
+                jsFmksPromise
+            ).then(function(toolingRes, jsFmkRes){
+                self.$el.html(viewTemplate({
+                    technos: _.union(toolingRes[0], jsFmkRes[0])
+                }));
             });
 
             return this;
