@@ -15,14 +15,13 @@ define([
         render: function(){
             var self = this;
 
-            $.ajax("/data/jsfmks.json", {
-                success: function(jsFmks){
-                    $.ajax("/data/toolings.json", {
-                        success: function(toolings){
-                            self.$el.html(viewTemplate({ technos: _.union(toolings, jsFmks) }));
-                        }
-                    });
-                }
+            var onceJsfmkFetched = $.ajax("/data/jsfmks.json");
+            var onceToolingFetched = $.ajax("/data/toolings.json");
+            $.when(
+                onceJsfmkFetched,
+                onceToolingFetched
+            ).then(function(jsFmksRes, toolingsRes){
+                self.$el.html(viewTemplate({ technos: _.union(toolingsRes[0], jsFmksRes[0]) }));
             });
 
             return this;
