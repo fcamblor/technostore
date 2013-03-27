@@ -1,0 +1,55 @@
+$tabLeftRadius: 20px;
+
+@mixin applyTheme($color){
+  .title {
+      color: $color;
+  }
+  .tab_left {
+      background-color: $color;
+  }
+}
+
+.hero-unit {
+    margin: 50px auto 0 auto;
+    width: 900px;
+
+  li {
+      background-color: #dfdfdf;
+      list-style: none;
+      margin: 10px 0px 10px 0px;
+      display: block;
+      height: 100px;
+      border-radius: $tabLeftRadius;
+
+    .tab_left {
+        width: $tabLeftRadius + 10px;
+        height: 100px;
+        float: left;
+        border-top-left-radius: $tabLeftRadius;
+        border-bottom-left-radius: $tabLeftRadius;
+    }
+
+    .title {
+        font-size: 1.5em;
+        padding-left: 25px;
+    }
+
+    .description {
+        font-size: 1.2em;
+        font-style: italic;
+        padding-left: 25px;
+    }
+
+    &.tooling {
+      @include applyTheme(#1099a3);
+    }
+
+    &.jsfmk {
+      @include applyTheme(#e16d17);
+    }
+  }
+
+
+
+}
+
