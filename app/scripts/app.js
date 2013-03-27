@@ -1,5 +1,5 @@
 /*global define */
-define(['jquery', 'bootstrap', 'routers/MainRouter', 'handlebars'], function ($, bootstrap, MainRouter, Handlebars) {
+define(['jquery', 'bootstrap', 'routers/MainRouter', 'handlebars', 'rivets-config'], function ($, bootstrap, MainRouter, Handlebars) {
     'use strict';
 
     console.log('Running jQuery %s', $().jquery);

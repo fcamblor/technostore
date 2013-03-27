@@ -8,7 +8,8 @@
     "jquery": "~1.9.1",
     "backbone": "~1.0.0",
     "underscore": "~1.4.4",
-    "require-handlebars-plugin": "~0.4.0"
+    "require-handlebars-plugin": "~0.4.0",
+    "rivets": "~0.4.5"
   },
   "devDependencies": {}
 }
