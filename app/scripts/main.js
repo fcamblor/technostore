@@ -4,12 +4,10 @@ require.config({
         jquery: '../components/jquery/jquery',
         underscore: '../components/underscore/underscore',
         backbone: '../components/backbone/backbone',
-        /*
         json2: '../components/require-handlebars-plugin/hbs/json2',
         handlebars: '../components/require-handlebars-plugin/Handlebars',
         i18nprecompile: '../components/require-handlebars-plugin/hbs/i18nprecompile',
         hbs: '../components/require-handlebars-plugin/hbs',
-        */
         bootstrap: 'vendor/bootstrap' /*,
         rivets: '../components/rivets/lib/rivets'
         */
@@ -38,20 +36,18 @@ require.config({
             exports: 'rivets'
             */
         }
-    /*
     },
     deps: [ 'hbs' ],
     // hbs particular configuration properties
     hbs: {
         disableI18n: true // Support for i18n is useless for the moment...
-        */
     }
 });
 
 
-require(['app', 'jquery', 'bootstrap'], function (app, $, bootstrap) {
+require(['app', 'hbs!templates/hello'], function (app, helloTemplate) {
     'use strict';
     // use app here
     console.log(app);
-    console.log('Running jQuery %s', $().jquery);
+    console.log(helloTemplate({ who: "devoxxFr" }));
 });

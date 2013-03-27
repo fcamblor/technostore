@@ -1,6 +1,8 @@
 /*global define */
-define([], function () {
+define(['jquery', 'bootstrap'], function ($) {
     'use strict';
+
+    console.log('Running jQuery %s', $().jquery);
 
     return '\'Allo \'Allo!';
 });
