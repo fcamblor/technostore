@@ -2,6 +2,7 @@ Bienvenue DevoxxFR sur la liste des technos que je vais vous présenter !...
 
 <ul>
     <li data-each-techno="technos.models" data-class="techno.type | typeToClass">
+        <a data-name="techno.id"></a>
         <div class="tab_left"></div>
         <div data-text="techno.title" class="title"></div>
         <div data-text="techno.description" class="description"></div>
@@ -16,6 +17,8 @@ Bienvenue DevoxxFR sur la liste des technos que je vais vous présenter !...
   <form> 
     <input type="text" data-value="editedEntry.title"/><br/>
     <textarea cols="30" rows="10" data-value="editedEntry.description"></textarea>
+    <button type="button" class="update">Save</button>
+    <button type="button" class="add">Create</button>
   </form>
 </div>
 

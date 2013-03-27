@@ -6,7 +6,9 @@ define([
 
     var TechnosListingViewClass = Backbone.View.extend({
         events: {
-            "click .edit":"editTechno"
+            "click .edit":"editTechno",
+            "click .add":"addTechno",
+            "click .update": "updateTechno"
         },
     
         initialize: function(){
@@ -39,8 +41,16 @@ define([
 
             var targetTechno = $(event.currentTarget).data("rivetsContext");
             this.editedTechno.set(targetTechno.toJSON());
+        },
+
+        updateTechno: function(){
+            this.technos.get(this.editedTechno.get("id")).set(this.editedTechno.toJSON());
+        },
+
+        addTechno: function(){
+            this.editedTechno.unset("id");
+            this.technos.add(this.editedTechno.toJSON());
         }
-    
     });
     
     return TechnosListingViewClass;
