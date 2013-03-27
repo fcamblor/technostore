@@ -1,5 +1,5 @@
 /*global define */
-define(["jquery", "backbone", "underscore", "views/HelloView"], function($, Backbone, _, HelloView){
+define(["jquery", "backbone", "underscore"], function($, Backbone, _){
     'use strict';    
 
     var MainRouterClass = Backbone.Router.extend({
@@ -16,8 +16,9 @@ define(["jquery", "backbone", "underscore", "views/HelloView"], function($, Back
     
         sayHello: function(){
             console.log("hello has been called !");
-            debugger;
-            window.view = new HelloView({ el: $(".hero-unit") }).render();
+            require(["views/HelloView"], function(HelloView){
+                window.view = new HelloView({ el: $(".hero-unit") }).render();
+            });
         }
     
     });

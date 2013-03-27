@@ -6,6 +6,7 @@ define([
 
     var HelloViewClass = Backbone.View.extend({
         events: {
+            "click #sayHelloBtn": "sayHello"
         },
     
         initialize: function(){
@@ -16,6 +17,10 @@ define([
             this.$el.html(viewTemplate({ who: "devoxxFr" }));
     
             return this;
+        },
+
+        sayHello: function(){
+            console.log("Hello world ! "+new Date());
         }
     
     });
