@@ -1,7 +1,7 @@
 /*global define */
 define([
-    "backbone", "underscore", "hbs!templates/technoListing"
-], function(Backbone, _, viewTemplate){
+    "backbone", "underscore", "hbs!templates/technoListing", "models/Technos"
+], function(Backbone, _, viewTemplate, Technos){
     'use strict';
 
     var TechnoListingViewClass = Backbone.View.extend({
@@ -10,18 +10,19 @@ define([
 
         initialize: function(){
             TechnoListingViewClass.__super__.initialize.apply(this, arguments);
+
+            this.technos = new Technos(); // Here, technos are empty !
         },
 
         render: function(){
             var self = this;
 
-            var onceJsfmkFetched = $.ajax("/data/jsfmks.json");
-            var onceToolingFetched = $.ajax("/data/toolings.json");
+            var onceTechnosFetched = this.technos.fetch();
+
             $.when(
-                onceJsfmkFetched,
-                onceToolingFetched
-            ).then(function(jsFmksRes, toolingsRes){
-                self.$el.html(viewTemplate({ technos: _.union(toolingsRes[0], jsFmksRes[0]) }));
+                onceTechnosFetched
+            ).then(function(){
+                self.$el.html(viewTemplate({ technos: self.technos.toJSON() }));
             });
 
             return this;
