@@ -16,3 +16,4 @@ Quelques ressources utiles pour bien manipuler Chrome Dev tools :
 - [Chrome Cheatsheet](http://anti-code.com/devtools-cheatsheet/)
 - [Secrets of the Chrome Dev tools (Patrick Duboy)](http://vimeo.com/53073654)
 - [Tooling for the modern Webapp developper (Addy Osmani)](http://www.youtube.com/watch?v=3C5-LjRfomY)
+- [Bower presentation at Google I/O (Dan Heberden)](https://www.youtube.com/watch?feature=player_embedded&v=o9Xo_WFAyqg#t=1429s)
