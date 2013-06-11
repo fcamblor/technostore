@@ -1,4 +1,4 @@
-Bienvenue sur le Techno Store !
+Bienvenue sur le Techno Store présenté à [DevoxxFr 2013](http://www.devoxx.com/display/FR13/Frontend+Live+Coding+++Tour+d%27horizon+de+l%27outillage+et+des+technos+web+d%27aujourd%27hui) !
 
 L'ensemble des technologies présentées durant ce talk est listée ci-dessous :
 - [Yeoman](http://yeoman.io/)
