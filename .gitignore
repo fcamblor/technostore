@@ -5,7 +5,6 @@ dist
 app/components
 app/bower_components
 .tmp
-.allow-devtools-edit
 
 # IDE-specific config files
 .idea
