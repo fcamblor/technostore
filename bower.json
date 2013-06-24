@@ -1,11 +1,15 @@
 {
-  "name": "technostore",
+  "name": "bnp-demo",
   "version": "0.0.0",
   "dependencies": {
     "sass-bootstrap": "~2.3.0",
     "requirejs": "~2.1.4",
     "modernizr": "~2.6.2",
-    "jquery": "~1.9.1"
+    "jquery": "~1.9.1",
+    "require-handlebars-plugin": "~0.4.0",
+    "underscore": "~1.4.4",
+    "backbone": "~1.0.0",
+    "rivets": "~0.5.7"
   },
   "devDependencies": {}
 }
