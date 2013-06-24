@@ -12,6 +12,8 @@ define([
         initialize: function(){
             HelloViewClass.__super__.initialize.apply(this, arguments);
             this.count = 0;
+
+            this.bind("helloSaid", this.anotherHello, this);
         },
 
         render: function(){
@@ -20,9 +22,14 @@ define([
             return this;
         },
 
+        anotherHello: function(context){
+            console.log("blah "+context.count);
+        },
+
         sayHello: function(){
             console.log("hello "+this.count);
             this.count++;
+            this.trigger("helloSaid", { count: this.count });
         }
 
     });
