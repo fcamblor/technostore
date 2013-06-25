@@ -22,7 +22,7 @@
 <!-- This footer should hidden by default and shown when there are todos -->
 <footer id="footer">
 	<!-- This should be `0 items left` by default -->
-	<span id="todo-count"><strong>1</strong> item left</span>
+	<span id="todo-count"><strong data-text="todos:pendingCount < todos.models"></strong> left / <strong data-text="todos:totalCount < todos.models"></strong> total</span>
 	<ul id="filters">
 		<li>
 			<a class="selected" href="#/">All</a>
@@ -34,5 +34,5 @@
 			<a href="#/completed">Completed</a>
 		</li>
 	</ul>
-	<button id="clear-completed">Clear completed (1)</button>
+	<button id="clear-completed">Clear completed (<span data-text="todos:completedCount < todos.models"></span>)</button>
 </footer>

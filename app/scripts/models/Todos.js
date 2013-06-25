@@ -9,6 +9,18 @@ define(["backbone", "underscore", "models/Todo"], function(Backbone, _, modelTyp
 
         initialize: function(properties, classProperties){
             TodosClass.__super__.initialize.call(this,properties, classProperties);
+        },
+
+        pendingCount: function(){
+            return _.filter(this.models, function(todo){ return !todo.isCompleted(); }).length;
+        },
+
+        completedCount: function(){
+            return _.filter(this.models, function(todo){ return todo.isCompleted(); }).length;
+        },
+
+        totalCount: function(){
+            return this.models.length;
         }
 
         // Aliases
