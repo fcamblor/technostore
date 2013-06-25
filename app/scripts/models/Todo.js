@@ -18,6 +18,10 @@ define(["backbone", "underscore"], function(Backbone, _){
 
         isCompleted: function(){
             return this.get("status")==="completed";
+        },
+
+        toggleStatus: function(){
+            this.set({"status": this.isCompleted()?"pending":"completed"});
         }
 
         // Aliases

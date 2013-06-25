@@ -6,7 +6,8 @@ define([
 
     var ListingAllTodosClass = Backbone.View.extend({
         events: {
-            "blur #new-todo": "addEditedTodo"
+            "blur #new-todo": "addEditedTodo",
+            "change .toggle": "toggleTodoStatus"
         },
 
         initialize: function(){
@@ -44,12 +45,24 @@ define([
                 // Calling save() on the todo will ensure the todo has been persisted
                 // (when calling the save() method, a POST is send on Todo.url)
                 $.when(todoToCreate.save()).then(function(){
+                    // We add the todo to the todos collection if and only if todo was correctly persisted
                     self.todos.add(todoProps);
 
                     // Resetting editedTodo's label
                     self.editedTodo.set({ label: "" });
                 });
             }
+        },
+
+        toggleTodoStatus: function(event){
+            var targetTodo = this._resolveTodoRelatedTo(event.currentTarget);
+
+            // Toggling todo's status
+            targetTodo.toggleStatus();
+            $.when(targetTodo.save()).fail(function(){
+                // If failure happens during persistence, re-toggling to revert to old status on UI
+                targetTodo.toggleStatus();
+            });
         },
 
         // Will resolve Todo attached to the DOM in the targetEl ancestors
