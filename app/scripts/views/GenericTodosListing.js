@@ -62,6 +62,7 @@ define([
             // Toggling todo's status
             targetTodo.toggleStatus();
             // FIXME : WHEN TOGGLING STATUS, CALCULATED ELEMENT ARE NOT RE-CALCULATED
+            // More info here : https://github.com/mikeric/rivets/issues/185
             $.when(targetTodo.save()).fail(function(){
                 // If failure happens during persistence, re-toggling to revert to old status on UI
                 targetTodo.toggleStatus();
