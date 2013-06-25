@@ -1,6 +1,34 @@
 /*global define */
-define(['routers/MainRouter', 'rivets'], function (MainRouter, rivets) {
+define(['routers/MainRouter', 'rivets', 'jquery'], function (MainRouter, rivets, $) {
     'use strict';
+
+    // Custom function allowing to retrieve data attached in node ancestry
+    // For instance, if we have :
+    // <div>    <= Attached data("bleh", 10) on this node
+    //   <div>    <= Attached data("blah", 5)
+    //     <span id="foo"></span>  <= Attached data("blah", 1) on this node
+    //   </div>
+    // </div>
+    // $("#foo").findDataInHierarchy("blah") will return 1
+    // $("#foo").findDataInHierarchy("bleh") will return 10
+    // $("#foo").findDataInHierarchy("unknownKey") will return undefined
+    $.fn.findDataInHierarchy = function(key){
+        if(this.length !== 1){
+            throw "findDataInHierarchy() should be called on exactly one jquery element, provided is `"+this.length+"`";
+        }
+
+        var values = this.map(function(){
+            var currentEl = $(this);
+            var dataElem = currentEl.data(key);
+            while(dataElem === undefined && currentEl.parent().length !== 0){
+                currentEl = currentEl.parent();
+                dataElem = currentEl.data(key);
+            }
+
+            return dataElem;
+        });
+        return values.length === 0?undefined:values[0];
+    };
 
     // Custom rivets binder allowing to attach to jquery elem's data(), binded value
     // For instance : <div data-to-jqdata-blah="foo"></div>
