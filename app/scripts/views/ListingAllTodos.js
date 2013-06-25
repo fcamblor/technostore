@@ -7,7 +7,8 @@ define([
     var ListingAllTodosClass = Backbone.View.extend({
         events: {
             "blur #new-todo": "addEditedTodo",
-            "change .toggle": "toggleTodoStatus"
+            "change .toggle": "toggleTodoStatus",
+            "click .destroy": "deleteTodo"
         },
 
         initialize: function(){
@@ -63,6 +64,13 @@ define([
                 // If failure happens during persistence, re-toggling to revert to old status on UI
                 targetTodo.toggleStatus();
             });
+        },
+
+        deleteTodo: function(event){
+            var targetTodo = this._resolveTodoRelatedTo(event.currentTarget);
+
+            // wait:true will wait for server to respond ok before removing targetTodo from its collections
+            targetTodo.destroy({ wait: true });
         },
 
         // Will resolve Todo attached to the DOM in the targetEl ancestors
