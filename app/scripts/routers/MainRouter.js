@@ -4,7 +4,10 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
 
     var MainRouterClass = Backbone.Router.extend({
         routes: {
-            "!/hello": "sayHello"
+            "": "redirectToListAll",
+            "!": "redirectToListAll",
+            "!/": "redirectToListAll",
+            "!/todos": "listAllTodos"
         },
 
         initialize: function () {
@@ -14,8 +17,15 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
             Backbone.history.start();
         },
 
-        sayHello: function(){
-            console.log("hello has been called !");
+        redirectToListAll: function(){
+            this.navigate("!/todos", {trigger: false, replace: true});
+        },
+
+        listAllTodos: function(){
+            require(['views/ListingAllTodos'], function(ViewClass){
+                window.currentView = new ViewClass({ el: $("#todoapp") });
+                window.currentView.render();
+            });
         }
 
     });
