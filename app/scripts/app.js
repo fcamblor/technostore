@@ -2,6 +2,20 @@
 define(['routers/MainRouter', 'rivets'], function (MainRouter, rivets) {
     'use strict';
 
+    // Custom rivets binder allowing to attach to jquery elem's data(), binded value
+    // For instance : <div data-to-jqdata-blah="foo"></div>
+    // will make a $("target-div").data("blah", fooObject);
+    rivets.binders['to-jqdata-*'] = {
+        "function": true,
+        unbind: function(el) {
+            $(el).removeData(this.args[0]);
+        },
+        routine: function(el, value) {
+            $(el).data(this.args[0], this.model);
+        }
+    };
+
+
     // CONFIGURES RIVETS.JS WITH BACKBONE.JS
     // Collection support implemented, thanks to https://github.com/mikeric/rivets/issues/57#issuecomment-13364792
     // Note that implementation have changed a bit in order to handle
