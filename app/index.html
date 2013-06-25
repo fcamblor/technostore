@@ -1,85 +1,71 @@
 <!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
-        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- build:js scripts/vendor/modernizr.js -->
-        <script src="bower_components/modernizr/modernizr.js"></script>
-        <!-- endbuild -->
-    </head>
-    <body>
-    <div class="container">
-        <div class="hero-unit">
-            <h1>'Allo, 'Allo!</h1>
-            <p>You now have</p>
-            <ul>
-                <li class="tooling">
-                    <div class="tab_left"></div>
-                    <div class="title">HTML5 Boilerplate</div>
-                    <div class="description">Squelette HTML5 contenant un ensemble de bonnes pratiques de dev</div>
-                </li>
-                <li class="tooling">
-                    <div class="tab_left"></div>
-                    <div class="title">Yeoman</div>
-                    <div class="description">Générateur d'arborescence (scaffolder)</div>
-                </li>
-                <li class="tooling">
-                    <div class="tab_left"></div>
-                    <div class="title">Grunt</div>
-                    <div class="description">Ordonnanceur de notre build JS</div>
-                </li>
-                <li class="tooling">
-                    <div class="tab_left"></div>
-                    <div class="title">Sass/Compass</div>
-                    <div class="description">Superset à CSS3 permettant notamment l'utilisation de variables, de mixins etc..</div>
-                </li>
-                <li class="tooling">
-                    <div class="tab_left"></div>
-                    <div class="icons-icon_movie"></div>
-                    <div class="title">Bower</div>
-                    <div class="description">Provisionneur de dépendances javascript</div>
-                </li>
-                <li class="jsfmk">
-                    <div class="tab_left"></div>
-                    <div class="title">RequireJS</div>
-                    <div class="description">Framework de chargement et d'injection de JS 'à la demande'</div>
-                </li>
-                <li class="jsfmk">
-                    <div class="tab_left"></div>
-                    <div class="title">Handlebars</div>
-                    <div class="description">Librairie de templating, basée sur Mustache</div>
-                </li>
-                <li class="jsfmk">
-                    <div class="tab_left"></div>
-                    <div class="title">BackboneJS</div>
-                    <div class="description">Framework javascript permettant de structurer ses développements en MVC</div>
-                </li>
-                <li class="jsfmk">
-                    <div class="tab_left"></div>
-                    <div class="title">Rivet</div>
-                    <div class="description">Framework permettant un binding bi-directionnel</div>
-                </li>
-            </ul>
-            <p>installed.</p>
-            <a href="#!/hello">Say hello</a>
-            <h3>Enjoy coding! - Yeoman</h3>
-        </div>
-    </div>
-
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-
-        <!-- build:js scripts/main.js -->
-        <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
-        <!-- endbuild -->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>TodoMVC</title>
+    <link rel="stylesheet" href="styles/main.css">
+	<!--[if IE]>
+	<script src="scripts/assets/ie.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<section id="todoapp">
+		<header id="header">
+			<h1>todos</h1>
+			<input id="new-todo" placeholder="What needs to be done?" autofocus>
+		</header>
+		<!-- This section should be hidden by default and shown when there are todos -->
+		<section id="main">
+			<input id="toggle-all" type="checkbox">
+			<label for="toggle-all">Mark all as complete</label>
+			<ul id="todo-list">
+				<!-- These are here just to show the structure of the list items -->
+				<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+				<li class="completed">
+					<div class="view">
+						<input class="toggle" type="checkbox" checked>
+						<label>Create a TodoMVC template</label>
+						<button class="destroy"></button>
+					</div>
+					<input class="edit" value="Create a TodoMVC template">
+				</li>
+				<li>
+					<div class="view">
+						<input class="toggle" type="checkbox">
+						<label>Rule the web</label>
+						<button class="destroy"></button>
+					</div>
+					<input class="edit" value="Rule the web">
+				</li>
+			</ul>
+		</section>
+		<!-- This footer should hidden by default and shown when there are todos -->
+		<footer id="footer">
+			<!-- This should be `0 items left` by default -->
+			<span id="todo-count"><strong>1</strong> item left</span>
+			<ul id="filters">
+				<li>
+					<a class="selected" href="#/">All</a>
+				</li>
+				<li>
+					<a href="#/active">Active</a>
+				</li>
+				<li>
+					<a href="#/completed">Completed</a>
+				</li>
+			</ul>
+			<button id="clear-completed">Clear completed (1)</button>
+		</footer>
+	</section>
+	<footer id="info">
+		<p>Double-click to edit a todo</p>
+		<!-- Change this out with your name and url ↓ -->
+		<p>Created by <a href="http://www.4sh.fr">Frédéric Camblor</a></p>
+		<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+	</footer>
+    <!-- build:js scripts/main.js -->
+    <script data-main="scripts/main" src="bower_components/requirejs/require.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
