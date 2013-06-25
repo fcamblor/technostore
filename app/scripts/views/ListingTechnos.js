@@ -38,7 +38,8 @@ define([
         },
 
         addTechno: function(){
-            this.technos.add({ title: "Nouvelle techno", description: "Une super techno !" });
+            var technoTitle = this.$("#technoTitle").val();
+            this.technos.add({ title: technoTitle, description: "Une super techno !" });
         }
 
     });
