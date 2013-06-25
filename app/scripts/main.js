@@ -8,9 +8,8 @@ require.config({
         handlebars: '../bower_components/require-handlebars-plugin/Handlebars',
         i18nprecompile: '../bower_components/require-handlebars-plugin/hbs/i18nprecompile',
         hbs: '../bower_components/require-handlebars-plugin/hbs',
-        bootstrap: 'vendor/bootstrap' /*,
+        bootstrap: 'vendor/bootstrap',
         rivets: '../bower_components/rivets/dist/rivets'
-        */
     },
     shim: {
         bootstrap: {
@@ -34,11 +33,10 @@ require.config({
         handlebars: {
             deps: ['underscore'],
             exports: 'Handlebars'
-        /* },
+        },
         rivets: {
             deps: [],
             exports: 'rivets'
-            */
         }
     },
     deps: [ 'hbs' ],
