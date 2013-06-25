@@ -4,7 +4,8 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
 
     var MainRouterClass = Backbone.Router.extend({
         routes: {
-            "!/hello": "sayHello"
+            "!/hello": "sayHello",
+            "!/technos": "displayTechnos"
         },
 
         initialize: function () {
@@ -17,6 +18,12 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
         sayHello: function(){
             require(["views/HelloView"], function(HelloView){
                 new HelloView({ el: $("#content") }).render();
+            });
+        },
+
+        displayTechnos: function(){
+            require(["views/ListingTechnos"], function(ListingTechnos){
+                new ListingTechnos({ el: $("#content") }).render();
             });
         }
 
