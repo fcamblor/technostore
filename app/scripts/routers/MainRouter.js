@@ -8,7 +8,6 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
         },
 
         initialize: function () {
-            debugger;
             MainRouterClass.__super__.initialize.apply(this, arguments);
             // Starting urls handlings
             // See http://backbonejs.org/#Router
@@ -16,7 +15,6 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
         },
 
         sayHello: function(){
-            debugger;
             console.log("hello has been called !");
         }
 

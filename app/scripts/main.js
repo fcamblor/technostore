@@ -49,10 +49,9 @@ require.config({
 });
 
 
-require(['app', 'jquery', 'hbs!templates/hello', 'bootstrap'], function (app, $, helloTemplate) {
+require(['app', 'jquery', 'bootstrap'], function (app, $) {
     'use strict';
     // use app here
     console.log(app);
-    console.log(helloTemplate({ world: "tout le monde" }));
     console.log('Running jQuery %s', $().jquery);
 });
