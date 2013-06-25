@@ -10,9 +10,10 @@ define(["backbone", "underscore"], function(Backbone, _){
             TodoClass.__super__.initialize.call(this,attributes, options);
             // Binding mongodb's _id to Backbone model's id, in order to make save()
             // work on current model, when id is available
-            this.id = this.get("_id")?this.get("_id")['$oid']:null;
+            var updateModelId = function(){ this.id = this.get("_id")?this.get("_id")['$oid']:null; };
+            updateModelId.apply(this); // Updating id right now
             // Ensuring this.id is updated in case the _id field is updated (should not happen in real life, but who knows...)
-            this.bind("change:_id", function(){ this.id = this.get("_id")?this.get("_id")['$oid']:null; }, this);
+            this.bind("change:_id", updateModelId, this);
         },
 
         isCompleted: function(){
