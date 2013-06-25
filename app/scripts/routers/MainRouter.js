@@ -2,14 +2,24 @@
 define(["jquery", "backbone", "underscore"], function($, Backbone, _){
     'use strict';
 
+    var switchToView = function(){
+        require([this.viewPath], function(ViewClass){
+            if(window.currentView){
+                window.currentView.undelegateEvents();
+            }
+            window.currentView = new ViewClass({ el: $("#todoapp") });
+            window.currentView.render();
+        });
+    };
+
     var MainRouterClass = Backbone.Router.extend({
         routes: {
             "": "redirectToListAll",
             "!": "redirectToListAll",
             "!/": "redirectToListAll",
-            "!/todos": "listAllTodos",
-            "!/active": "listActiveTodos",
-            "!/completed": "listCompletedTodos"
+            "!/todos": _.bind(switchToView, {viewPath: "views/AllTodosListing"}),
+            "!/active": _.bind(switchToView, {viewPath: "views/ActiveTodosListing"}),
+            "!/completed": _.bind(switchToView, {viewPath: "views/CompletedTodosListing"})
         },
 
         initialize: function () {
@@ -21,36 +31,6 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
 
         redirectToListAll: function(){
             this.navigate("!/todos", {trigger: true, replace: true});
-        },
-
-        listAllTodos: function(){
-            require(['views/AllTodosListing'], function(ViewClass){
-                if(window.currentView){
-                    window.currentView.undelegateEvents();
-                }
-                window.currentView = new ViewClass({ el: $("#todoapp") });
-                window.currentView.render();
-            });
-        },
-
-        listActiveTodos: function(){
-            require(['views/ActiveTodosListing'], function(ViewClass){
-                if(window.currentView){
-                    window.currentView.undelegateEvents();
-                }
-                window.currentView = new ViewClass({ el: $("#todoapp") });
-                window.currentView.render();
-            });
-        },
-
-        listCompletedTodos: function(){
-            require(['views/CompletedTodosListing'], function(ViewClass){
-                if(window.currentView){
-                    window.currentView.undelegateEvents();
-                }
-                window.currentView = new ViewClass({ el: $("#todoapp") });
-                window.currentView.render();
-            });
         }
 
     });
