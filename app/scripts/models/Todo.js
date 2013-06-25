@@ -8,6 +8,10 @@ define(["backbone", "underscore"], function(Backbone, _){
 
         initialize: function(attributes, options){
             TodoClass.__super__.initialize.call(this,attributes, options);
+        },
+
+        isCompleted: function(){
+            return this.get("status")==="completed";
         }
 
         // Aliases
