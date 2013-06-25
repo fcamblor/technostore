@@ -4,7 +4,7 @@ define([
 ], function(Backbone, _, viewTemplate, rivets, Todos, Todo){
     'use strict';
 
-    var ListingAllTodosClass = Backbone.View.extend({
+    var GenericTodosListing = Backbone.View.extend({
         events: {
             "blur #new-todo": "addEditedTodo",
             "change .toggle": "toggleTodoStatus",
@@ -13,7 +13,7 @@ define([
         },
 
         initialize: function(){
-            ListingAllTodosClass.__super__.initialize.apply(this, arguments);
+            GenericTodosListing.__super__.initialize.apply(this, arguments);
 
             this.todos = new Todos();
             this.editedTodo = new Todo({ status: "pending" });
@@ -31,7 +31,7 @@ define([
 
             // Once rivet's binding is done, fetching todos
             // (which will then automatically populate the DOM once http response is received, thanks to rivets)
-            this.todos.fetch();
+            this.todos.fetch({ url: this.todosFetchUrl });
 
             return this;
         },
@@ -86,9 +86,12 @@ define([
         // Will resolve Todo attached to the DOM in the targetEl ancestors
         _resolveTodoRelatedTo: function(targetEl){
             return $(targetEl).findDataInHierarchy("todo");
-        }
+        },
+
+        // OVERRIDABLE basic url (see subclasses of current class)
+        todosFetchUrl: "https://api.mongolab.com/api/1/databases/todomvc/collections/todos?apiKey=fO6K0boLuhcPc1LvTg1bAiox6i2em1cW"
 
     });
 
-    return ListingAllTodosClass;
+    return GenericTodosListing;
 });

@@ -7,7 +7,9 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
             "": "redirectToListAll",
             "!": "redirectToListAll",
             "!/": "redirectToListAll",
-            "!/todos": "listAllTodos"
+            "!/todos": "listAllTodos",
+            "!/active": "listActiveTodos",
+            "!/completed": "listCompletedTodos"
         },
 
         initialize: function () {
@@ -18,11 +20,34 @@ define(["jquery", "backbone", "underscore"], function($, Backbone, _){
         },
 
         redirectToListAll: function(){
-            this.navigate("!/todos", {trigger: false, replace: true});
+            this.navigate("!/todos", {trigger: true, replace: true});
         },
 
         listAllTodos: function(){
-            require(['views/ListingAllTodos'], function(ViewClass){
+            require(['views/AllTodosListing'], function(ViewClass){
+                if(window.currentView){
+                    window.currentView.undelegateEvents();
+                }
+                window.currentView = new ViewClass({ el: $("#todoapp") });
+                window.currentView.render();
+            });
+        },
+
+        listActiveTodos: function(){
+            require(['views/ActiveTodosListing'], function(ViewClass){
+                if(window.currentView){
+                    window.currentView.undelegateEvents();
+                }
+                window.currentView = new ViewClass({ el: $("#todoapp") });
+                window.currentView.render();
+            });
+        },
+
+        listCompletedTodos: function(){
+            require(['views/CompletedTodosListing'], function(ViewClass){
+                if(window.currentView){
+                    window.currentView.undelegateEvents();
+                }
                 window.currentView = new ViewClass({ el: $("#todoapp") });
                 window.currentView.render();
             });
