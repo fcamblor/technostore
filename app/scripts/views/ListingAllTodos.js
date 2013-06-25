@@ -50,6 +50,11 @@ define([
                     self.editedTodo.set({ label: "" });
                 });
             }
+        },
+
+        // Will resolve Todo attached to the DOM in the targetEl ancestors
+        _resolveTodoRelatedTo: function(targetEl){
+            return $(targetEl).findDataInHierarchy("todo");
         }
 
     });
