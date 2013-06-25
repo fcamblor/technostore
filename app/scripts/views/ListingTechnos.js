@@ -1,7 +1,7 @@
 /*global define */
 define([
-    "backbone", "underscore", "hbs!templates/listingTechnos", "models/Technos"
-], function(Backbone, _, viewTemplate, Technos){
+    "backbone", "underscore", "hbs!templates/listingTechnos", "models/Technos", 'models/Techno', 'rivets'
+], function(Backbone, _, viewTemplate, Technos, Techno, rivets){
     'use strict';
 
     var ListingTechnosClass = Backbone.View.extend({
@@ -13,33 +13,29 @@ define([
             ListingTechnosClass.__super__.initialize.apply(this, arguments);
 
             this.technos = new Technos();
+            this.editedTechno = new Techno();
 
-            this.technos.bind("add remove reset", this.display, this);
+            var self = this;
+            this.editedTechno.bind("change:title", function(){ console.log("title changé : "+self.editedTechno.toJSON().title); });
         },
 
         render: function(){
-            var self = this;
+            this.$el.html(viewTemplate({}));
 
-            var ajaxCall = this.technos.fetch();
-
-            $.when(
-                ajaxCall
-            ).then(function(){
-                self.display();
+            rivets.bind(this.$el, {
+                technos: this.technos,
+                editedTechno: this.editedTechno
             });
+
+            this.technos.fetch();
 
             return this;
         },
 
-        display: function(){
-            this.$el.html(viewTemplate({
-                technos: this.technos.toJSON()
-            }));
-        },
-
         addTechno: function(){
-            var technoTitle = this.$("#technoTitle").val();
-            this.technos.add({ title: technoTitle, description: "Une super techno !" });
+            this.technos.add(this.editedTechno.toJSON());
+
+            this.editedTechno.set({ title: "", description: "" });
         }
 
     });

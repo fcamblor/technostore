@@ -1,12 +1,12 @@
 <ul>
-    {{#each technos}}
-    <li class="{{className}}">
+    <li data-each-techno="technos.models" data-class="techno.className">
         <div class="tab_left"></div>
-        <div class="title">{{title}}</div>
-        <div class="description">{{description}}</div>
+        <div class="title" data-text="techno.title"></div>
+        <div class="description" data-text="techno.description"></div>
     </li>
-    {{/each}}
 </ul>
 
-<input type="text" name="technoTitle" id="technoTitle" />
+<input type="text" data-value="editedTechno.title" />
+<textarea data-value="editedTechno.description"></textarea>
+<div data-text="editedTechno:title() < editedTechno.title"></div>
 <button id="addTechno">Add techno</button>
