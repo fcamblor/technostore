@@ -8,7 +8,8 @@ define([
         events: {
             "blur #new-todo": "addEditedTodo",
             "change .toggle": "toggleTodoStatus",
-            "click .destroy": "deleteTodo"
+            "click .destroy": "deleteTodo",
+            "click #clear-completed": "clearCompleted"
         },
 
         initialize: function(){
@@ -71,6 +72,14 @@ define([
 
             // wait:true will wait for server to respond ok before removing targetTodo from its collections
             targetTodo.destroy({ wait: true });
+        },
+
+        clearCompleted: function(){
+            var completedTodos = this.todos.completed();
+            _.each(completedTodos, function(todo){
+                // wait:true will wait for server to respond ok before removing targetTodo from its collections
+                todo.destroy({ wait: true });
+            });
         },
 
         // Will resolve Todo attached to the DOM in the targetEl ancestors

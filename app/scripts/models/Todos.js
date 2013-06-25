@@ -11,12 +11,20 @@ define(["backbone", "underscore", "models/Todo"], function(Backbone, _, modelTyp
             TodosClass.__super__.initialize.call(this,properties, classProperties);
         },
 
+        pendings: function(){
+            return _.filter(this.models, function(todo){ return !todo.isCompleted(); });
+        },
+
         pendingCount: function(){
-            return _.filter(this.models, function(todo){ return !todo.isCompleted(); }).length;
+            return this.pendings().length;
+        },
+
+        completed: function(){
+            return _.filter(this.models, function(todo){ return todo.isCompleted(); });
         },
 
         completedCount: function(){
-            return _.filter(this.models, function(todo){ return todo.isCompleted(); }).length;
+            return this.completed().length;
         },
 
         totalCount: function(){
