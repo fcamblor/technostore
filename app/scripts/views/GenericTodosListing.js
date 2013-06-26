@@ -42,7 +42,8 @@ define([
                 var self = this;
 
                 // Cloning editedTodo in order to not modify model binded to the DOM
-                var todoToCreate = new Todo(todoProps );
+                todoProps.timestamp = new Date().getTime();
+                var todoToCreate = new Todo( todoProps );
 
                 // Calling save() on the todo will ensure the todo has been persisted
                 // (when calling the save() method, a POST is send on Todo.url)
