@@ -12,7 +12,7 @@
 		<li data-each-todo="todos" data-class="todo.status" data-to-jqdata-todo="todo">
 			<div class="view">
 				<input class="toggle" type="checkbox" data-checked="todo:isCompleted < todo.status">
-				<label data-text="todo.label"></label>
+				<label><span data-text="todo.label"></span> (<span data-text="todo.timestamp | formatDate"></span>)</label>
 				<button class="destroy"></button>
 			</div>
 			<input class="edit" value="Create a TodoMVC template">
