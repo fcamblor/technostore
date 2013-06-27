@@ -49,44 +49,70 @@ define(['routers/MainRouter', 'rivets', 'jquery'], function (MainRouter, rivets,
     // Note that implementation have changed a bit in order to handle
     // properties which are not Backbone.Models (in that case, no subscription
     // will be done on these properties)
+    // Adapter edited with mikeric's suggestion on https://github.com/mikeric/rivets/issues/185, allowing to define
+    // '+' as collection models' watched properties
+    // For example : <strong data-text="todos:pendingCount < todos.models+status">
     rivets.configure({
       adapter: {
-        subscribe: function(obj, keypath, callback) {
-          if (obj instanceof Backbone.Collection) {
-            obj.on('add remove reset', function () {
-              callback(obj[keypath])
-            });
-          } else if(obj instanceof Backbone.Model) {
-            obj.on('change:' + keypath, function (m, v) { callback(v) });
-          };
-        },
-        unsubscribe: function(obj, keypath, callback) {
-          if (obj instanceof Backbone.Collection) {
-            obj.off('add remove reset', function () {
-              callback(obj[keypath])
-            });
-          } else if(obj instanceof Backbone.Model) {
-            obj.off('change:' + keypath, function (m, v) { callback(v) });
-          };
-        },
-        read: function(obj, keypath) {
-          if (obj instanceof Backbone.Collection) {
-            return obj["models"]; // fetching models directly
-          } else if(obj instanceof Backbone.Model) {
-            return obj.get(keypath);
-          } else {
-            return obj;
-          };
-        },
-        publish: function(obj, keypath, value) {
-          if (obj instanceof Backbone.Collection) {
-            obj[keypath] = value;
-          } else if(obj instanceof Backbone.Model) {
-            obj.set(keypath, value);
-          } else {
-            throw "Unsupported operation : rivet.publish() done on `"+obj+"`, `"+keypath+"`, `"+value+"`";
-          };
-        }
+          subscribe: function(obj, keypath, callback) {
+            var attributes = keypath.split('+')
+            keypath = attributes.shift()
+
+            if (obj instanceof Backbone.Collection) {
+              var events = "add remove reset"
+
+              for (var i = 0; i < attributes.length; i++) {
+                events += ' change:' + attributes[i]
+              }
+
+              obj.on(events, callback);
+            } else if(obj instanceof Backbone.Model) {
+              obj.on('change:' + keypath, callback);
+            };
+          },
+
+          unsubscribe: function(obj, keypath, callback) {
+            var attributes = keypath.split('+')
+            keypath = attributes.shift()
+
+            if (obj instanceof Backbone.Collection) {
+                var events = "add remove reset"
+
+              for (var i = 0; i < attributes.length; i++) {
+                events += ' change:' + attributes[i]
+              }
+
+              obj.off(events, callback);
+            } else if(obj instanceof Backbone.Model) {
+              obj.off('change:' + keypath, callback);
+            };
+          },
+
+          read: function(obj, keypath) {
+            var attributes = keypath.split('+')
+            keypath = attributes.shift()
+
+            if (obj instanceof Backbone.Collection) {
+              return obj[keypath];
+            } else if(obj instanceof Backbone.Model) {
+              return obj.get(keypath);
+            } else {
+              return obj;
+            };
+          },
+
+          publish: function(obj, keypath, value) {
+            var attributes = keypath.split('+')
+            keypath = attributes.shift()
+
+            if (obj instanceof Backbone.Collection) {
+              obj[keypath] = value;
+            } else if(obj instanceof Backbone.Model) {
+              obj.set(keypath, value);
+            } else {
+              throw "Unsupported operation : rivet.publish() done on `"+obj+"`, `"+keypath+"`, `"+value+"`";
+            };
+          }
       }
     });
 

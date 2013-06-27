@@ -9,7 +9,7 @@
 	<ul id="todo-list">
 		<!-- These are here just to show the structure of the list items -->
 		<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-		<li data-each-todo="todos" data-class="todo.status" data-to-jqdata-todo="todo">
+		<li data-each-todo="todos.models" data-class="todo.status" data-to-jqdata-todo="todo">
 			<div class="view">
 				<input class="toggle" type="checkbox" data-checked="todo:isCompleted < todo.status">
 				<label><span data-text="todo.label"></span> (<span data-text="todo.timestamp | formatDate"></span>)</label>
@@ -22,7 +22,7 @@
 <!-- This footer should hidden by default and shown when there are todos -->
 <footer id="footer">
 	<!-- This should be `0 items left` by default -->
-	<span id="todo-count"><strong data-text="todos:pendingCount < todos.models"></strong> left / <strong data-text="todos:totalCount < todos.models"></strong> total</span>
+	<span id="todo-count"><strong data-text="todos:pendingCount < todos.models+status"></strong> left / <strong data-text="todos:totalCount < todos.models"></strong> total</span>
 	<ul id="filters">
 		<li>
 			<a class="selected" href="#!/">All</a>
@@ -34,5 +34,5 @@
 			<a href="#!/completed">Completed</a>
 		</li>
 	</ul>
-	<button id="clear-completed">Clear completed (<span data-text="todos:completedCount < todos.models"></span>)</button>
+	<button id="clear-completed">Clear completed (<span data-text="todos:completedCount < todos.models+status"></span>)</button>
 </footer>
