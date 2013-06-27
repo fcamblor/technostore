@@ -1,7 +1,7 @@
 /*global define */
 define([
-    "backbone", "underscore", "hbs!templates/todosListing", 'rivets', 'models/Todos', 'models/Todo'
-], function(Backbone, _, viewTemplate, rivets, Todos, Todo){
+    "backbone", "underscore", "hbs!templates/todosListing", 'rivets', 'models/Todos', 'models/Todo', 'models/Navigation'
+], function(Backbone, _, viewTemplate, rivets, Todos, Todo, Navigation){
     'use strict';
 
     var GenericTodosListing = Backbone.View.extend({
@@ -17,6 +17,7 @@ define([
 
             this.todos = new Todos();
             this.editedTodo = new Todo({ status: "pending" });
+            this.navigation = new Navigation();
         },
 
         render: function(){
@@ -26,7 +27,8 @@ define([
             // Activating rivet's binding on rendered html
             rivets.bind(this.$el, {
                 todos: this.todos,
-                editedTodo: this.editedTodo
+                editedTodo: this.editedTodo,
+                navigation: this.navigation
             });
 
             // Once rivet's binding is done, fetching todos

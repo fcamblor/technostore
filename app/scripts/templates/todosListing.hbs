@@ -25,13 +25,13 @@
 	<span id="todo-count"><strong data-text="todos:pendingCount < todos.models+status"></strong> left / <strong data-text="todos:totalCount < todos.models"></strong> total</span>
 	<ul id="filters">
 		<li>
-			<a class="selected" href="#!/">All</a>
+			<a data-class="navigation:allSelectedClass < navigation.selectedStatus" href="#!/">All</a>
 		</li>
 		<li>
-			<a href="#!/active">Active</a>
+			<a data-class="navigation:activeSelectedClass < navigation.selectedStatus" href="#!/active">Active</a>
 		</li>
 		<li>
-			<a href="#!/completed">Completed</a>
+			<a data-class="navigation:completedSelectedClass < navigation.selectedStatus" href="#!/completed">Completed</a>
 		</li>
 	</ul>
 	<button id="clear-completed">Clear completed (<span data-text="todos:completedCount < todos.models+status"></span>)</button>
