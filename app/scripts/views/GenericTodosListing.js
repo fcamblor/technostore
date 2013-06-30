@@ -9,7 +9,8 @@ define([
             "blur #new-todo": "addEditedTodo",
             "change .toggle": "toggleTodoStatus",
             "click .destroy": "deleteTodo",
-            "click #clear-completed": "clearCompleted"
+            "click #clear-completed": "clearCompleted",
+            "change #toggle-all": "toggleAllTodoStatuses"
         },
 
         initialize: function(){
@@ -38,6 +39,16 @@ define([
             return this;
         },
 
+        toggleAllTodoStatuses: function(event){
+            var toggleToCompleted = $(event.currentTarget).is(":checked");
+            var self = this;
+            this.todos.each(function(todo){
+                if(toggleToCompleted === !todo.isCompleted()){
+                    self._toggleTodoStatus(todo);
+                }
+            });
+        },
+
         addEditedTodo: function(){
             var todoProps = this.editedTodo.toJSON();
             if(todoProps.label && todoProps.label !== ""){
@@ -59,9 +70,7 @@ define([
             }
         },
 
-        toggleTodoStatus: function(event){
-            var targetTodo = this._resolveTodoRelatedTo(event.currentTarget);
-
+        _toggleTodoStatus: function(targetTodo){
             // Toggling todo's status
             targetTodo.toggleStatus();
             // FIXME : WHEN TOGGLING STATUS, CALCULATED ELEMENT ARE NOT RE-CALCULATED
@@ -70,6 +79,12 @@ define([
                 // If failure happens during persistence, re-toggling to revert to old status on UI
                 targetTodo.toggleStatus();
             });
+        },
+
+        toggleTodoStatus: function(event){
+            var targetTodo = this._resolveTodoRelatedTo(event.currentTarget);
+
+            this._toggleTodoStatus(targetTodo);
         },
 
         deleteTodo: function(event){
