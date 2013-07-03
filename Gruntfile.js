@@ -36,9 +36,28 @@ module.exports = function (grunt) {
                 files: ['test/spec/{,*/}*.coffee'],
                 tasks: ['coffee:test']
             },
-            compass: {
+            // When sass files are modified, we should consider copying them
+            // into .tmp/styles/ folder because if we keep original sass files
+            // in <yeoman.app>/styles, generated sourcemap path in sourcemaps located
+            // in .tmp directory will be like "../../app/styles/xxx.scss
+            // And this path won't look good once in the browser !
+            // This is limitation number 1 and it could be avoided if we could put absolute paths
+            // in generated sourcemap paths
+            sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server']
+                tasks: ['sass:server', 'copy:sassStylesToTmp']
+            },
+            // We should consider copying sass files in .tmp folder (see previous workaround)
+            // into <yeoman.app>/styles directory in order to have sass file edit
+            // directly in chrome applied in the original sass file
+            // This is limitation number 2 and it could be avoided if we could fix limitation number 1
+
+            // Note that there seem to have another limitation (number 3) in chrome because using Workspace
+            // feature with binding on http://localhost:9000/styles/ to the <project path>/.tmp/styles/ directory
+            // doesn't seem to work really well (maybe chrome doesn't like .* folders in Workspaces ???)
+            sasslivereload: {
+                files: ['.tmp/styles/*.scss'],
+                tasks: ['copy:tmpSassToStyles', 'sass:server']
             },
             livereload: {
                 options: {
@@ -144,6 +163,32 @@ module.exports = function (grunt) {
                     dest: '.tmp/spec',
                     ext: '.js'
                 }]
+            }
+        },
+        sass: {
+            options: {
+                compass: true,
+                loadPath: ['app/bower_components/']
+            },
+            dist: {
+                options: {
+                    style: "compressed"
+                }
+            },
+            server: {
+                files: [
+                    {
+                        expand: true,        // Enable dynamic expansion.
+                        cwd: '.tmp/styles',  // Src matches are relative to this path.
+                        src: ['*.scss'],     // Actual pattern(s) to match.
+                        dest: '.tmp/styles', // Destination path prefix.
+                        ext: '.css'          // Dest filepaths will have this extension.
+                    }
+		],
+                options: {
+                    sourcemap: true,
+                    trace: true
+                }
             }
         },
         compass: {
@@ -289,11 +334,37 @@ module.exports = function (grunt) {
                         'generated/*'
                     ]
                 }]
+            },
+            sassStylesToTmp: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '<%= yeoman.app %>/styles',
+                        dest: '.tmp/styles',
+                        src: [
+                            '*.scss'
+                        ]
+                    }
+                ]
+            },
+            tmpSassToStyles: {
+                files: [
+                    {
+                        expand: true,
+                        dot: true,
+                        cwd: '.tmp/styles',
+                        dest: '<%= yeoman.app %>/styles',
+                        src: [
+                            '*.scss'
+                        ]
+                    }
+                ]
             }
         },
         concurrent: {
             server: [
-                'compass',
+                'sass',
                 'coffee:dist'
             ],
             test: [
@@ -301,7 +372,7 @@ module.exports = function (grunt) {
             ],
             dist: [
                 'coffee',
-                'compass',
+                'sass',
                 'imagemin',
                 'svgmin',
                 'htmlmin'
@@ -324,6 +395,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'copy:sassStylesToTmp',
             'concurrent:server',
             'connect:livereload',
             'open',
