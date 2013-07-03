@@ -176,12 +176,15 @@ module.exports = function (grunt) {
                 }
             },
             server: {
-                // Wow ... this is harsh to have to declare mappings
-                // one by one... this is limitation number 4 to my POV
-                files: {
-                    '.tmp/styles/main.css': '.tmp/styles/main.scss',
-                    '.tmp/styles/main2.css': '.tmp/styles/main2.scss'
-                },
+                files: [
+                    {
+                        expand: true,        // Enable dynamic expansion.
+                        cwd: '.tmp/styles',  // Src matches are relative to this path.
+                        src: ['*.scss'],     // Actual pattern(s) to match.
+                        dest: '.tmp/styles', // Destination path prefix.
+                        ext: '.css'          // Dest filepaths will have this extension.
+                    }
+		],
                 options: {
                     sourcemap: true,
                     trace: true
